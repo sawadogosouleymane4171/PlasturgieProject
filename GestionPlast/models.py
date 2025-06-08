@@ -6,15 +6,36 @@ class Machine(models.Model):
     """
     Machines utilisées dans l'usine.
     """
-    code = models.CharField(
+    machine_code = models.CharField(
         primary_key=True,
         max_length=20,
         verbose_name="Code machine",
-        help_text="Identifiant unique de la machine"
+        help_text="Identifiant unique de la machine, ex. 'M001'"
     )
     nom = models.CharField(
         max_length=100,
-        verbose_name="Nom de la machine"
+        verbose_name="Nom de la machine",
+        help_text="Désignation de la machine, ex. 'Extrudeuse'"
+    )
+    type_machine = models.CharField(
+        max_length=50,
+        verbose_name="Type de machine",
+        help_text="Fonction ou catégorie, ex. 'Injection'"
+    )
+    date_mise_en_service = models.DateField(
+        verbose_name="Date de mise en service",
+        help_text="Date de démarrage de la machine"
+    )
+    ETAT_CHOICES = [
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+        ('maintenance', 'Maintenance')
+    ]
+    etat = models.CharField(
+        max_length=20,
+        choices=ETAT_CHOICES,
+        verbose_name="État",
+        help_text="Statut opérationnel de la machine"
     )
 
     class Meta:
@@ -22,8 +43,9 @@ class Machine(models.Model):
         verbose_name_plural = "Machines"
 
     def __str__(self):
-        return f"{self.code} – {self.nom}"
+        return f"{self.machine_code} – {self.nom} ({self.get_etat_display()})"
 
+   
 
 
 
@@ -130,7 +152,10 @@ class Client(models.Model):
         help_text="Identifiant unique du client"
     )
     nom = models.CharField(
-        max_length=100, verbose_name="Raison sociale"
+        max_length=100, verbose_name="Nom"
+    )
+    prenom = models.CharField(
+        max_length=50, verbose_name="Prénom"
     )
     contact_email = models.EmailField(
         blank=True, verbose_name="Email"
@@ -161,7 +186,10 @@ class Fournisseur(models.Model):
         help_text="Identifiant unique du fournisseur"
     )
     nom = models.CharField(
-        max_length=100, verbose_name="Raison sociale"
+        max_length=100, verbose_name="Nom"
+    )
+    prenom = models.CharField(
+        max_length=50, verbose_name="Prénom"
     )
     contact_email = models.EmailField(
         blank=True, verbose_name="Email"

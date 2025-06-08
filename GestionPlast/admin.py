@@ -4,9 +4,9 @@ from .models import Production, Qualite, Client, Fournisseur, Achat, Commande, M
 # Register your models here
 @admin.register(Machine)
 class MachineAdmin(admin.ModelAdmin):
-    list_display = ('code', 'nom')
-    search_fields = ('code', 'nom')
-
+    list_display = ['machine_code', 'nom', 'type_machine', 'etat']
+    search_fields = ['machine_code', 'nom']
+    list_filter = ['type_machine', 'etat']
 
 @admin.register(Production)
 class ProductionAdmin(admin.ModelAdmin):
