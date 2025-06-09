@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Productions{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Productions</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search productions..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'production_create' %}" class="btn btn-primary mb-3">Add Production</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Lot Code</th>
+                    <th>Date Production</th>
+                    <th>Quantity (kg)</th>
+                    <th>Plastic Type</th>
+                    <th>Machines</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for production in productions %}
+                <tr>
+                    <td>{{ production.lot_code }}</td>
+                    <td>{{ production.date_production }}</td>
+                    <td>{{ production.quantite_kg }}</td>
+                    <td>{{ production.type_plastique }}</td>
+                    <td>
+                        {% for machine in production.machines.all %}
+                            {{ machine.nom }},
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{% url 'production_update' production.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'production_delete' production.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

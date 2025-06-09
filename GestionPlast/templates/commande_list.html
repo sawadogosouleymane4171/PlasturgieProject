@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Commandes</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search commandes..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'commande_create' %}" class="btn btn-primary mb-3">Add Commande</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Commande Number</th>
+                    <th>Client</th>
+                    <th>Lot</th>
+                    <th>Commande Date</th>
+                    <th>Status</th>
+                    <th>Quantity (kg)</th>
+                    <th>Unit Price (€)</th>
+                    <th>Delivery Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.numero }}</td>
+                    <td>{{ commande.client }}</td>
+                    <td>{{ commande.lot }}</td>
+                    <td>{{ commande.date_commande }}</td>
+                    <td>{{ commande.get_statut_display }}</td>
+                    <td>{{ commande.quantite_vendue_kg }}</td>
+                    <td>{{ commande.prix_unitaire_eur }}</td>
+                    <td>{{ commande.date_livraison }}</td>
+                    <td>
+                        <a href="{% url 'commande_update' commande.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'commande_delete' commande.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

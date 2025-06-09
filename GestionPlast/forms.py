@@ -45,17 +45,12 @@ class ProductionForm(forms.ModelForm):
         }
 
 class QualiteForm(forms.ModelForm):
-    lot_code = forms.CharField(
-        max_length=20,
-        required=True,
-        label='Lot Code',
-        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Lot#124'})
-    )
     class Meta:
         model = Qualite
-        fields = ['test_code','lot_code','taux_defauts_pct','type_test','resultat','observation']
+        fields = ['test_code','lot','taux_defauts_pct','type_test','resultat','observation']
         labels = {
             'test_code':'Code du test',
+            'lot':'Lot de production',
             'taux_defauts_pct':'Taux de défauts (%)',
             'type_test':'Type de test',
             'resultat':'Résultat du test',
@@ -63,18 +58,12 @@ class QualiteForm(forms.ModelForm):
         }
         widgets = {
             'test_code': forms.TextInput(attrs={'class':'form-control','placeholder':'Q123'}),
+            'lot': forms.Select(attrs={'class':'form-select'}),
             'taux_defauts_pct': forms.NumberInput(attrs={'class':'form-control','step':'0.01','placeholder':'1.23'}),
             'type_test': forms.Select(attrs={'class':'form-select'}),
             'resultat': forms.Select(attrs={'class':'form-select'}),
             'observation': forms.Textarea(attrs={'class':'form-control','rows':2,'placeholder':'Remarques...'}),
         }
-    def save(self, commit=True):
-        qual = super().save(commit=False)
-        code = self.cleaned_data['lot_code']
-        lot = Production.objects.get(lot_code=code)
-        qual.lot = lot
-        if commit: qual.save()
-        return qual
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -115,14 +104,12 @@ class FournisseurForm(forms.ModelForm):
         }
 
 class AchatForm(forms.ModelForm):
-    nom = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Dupont'}))
-    prenom = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Jean'}))
-    
     class Meta:
         model = Achat
-        fields = ['achat_code','fournisseur_code','type_matiere','quantite_achetee_kg','cout_unitaire_eur','date_achat']
+        fields = ['achat_code','fournisseur','type_matiere','quantite_achetee_kg','cout_unitaire_eur','date_achat']
         labels = {
             'achat_code':'Code achat',
+            'fournisseur': 'Fournisseur',
             'type_matiere':'Type de matière',
             'quantite_achetee_kg':'Quantité achetée (kg)',
             'cout_unitaire_eur':'Coût unitaire (€ / kg)',
@@ -130,37 +117,22 @@ class AchatForm(forms.ModelForm):
         }
         widgets = {
             'achat_code': forms.TextInput(attrs={'class':'form-control','placeholder':'A123'}),
+            'fournisseur': forms.Select(attrs={'class':'form-select'}),
             'type_matiere': forms.Select(attrs={'class':'form-select'}),
             'quantite_achetee_kg': forms.NumberInput(attrs={'class':'form-control','step':'0.001'}),
             'cout_unitaire_eur': forms.NumberInput(attrs={'class':'form-control','step':'0.001'}),
             'date_achat': forms.DateInput(attrs={'type':'date','class':'form-control'}),
         }
-    def save(self, commit=True):
-        achat = super().save(commit=False)
-        fournisseur = Fournisseur.objects.get(
-            nom=self.cleaned_data['nom'], 
-            prenom=self.cleaned_data['prenom']
-        )
-        achat.fournisseur = fournisseur
-        if commit:
-            achat.save()
-        return achat
 
 
 class CommandeForm(forms.ModelForm):
-    nom = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Dupont'}))
-    prenom = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Jean'}))
-    lot_code = forms.CharField(
-        max_length=20,
-        required=True,
-        label='Code du lot',
-        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Lot#124'})
-    )
     class Meta:
         model = Commande
-        fields = ['numero','client_code','lot_code','date_commande','statut','quantite_vendue_kg','prix_unitaire_eur','date_livraison']
+        fields = ['numero','client','lot','date_commande','statut','quantite_vendue_kg','prix_unitaire_eur','date_livraison']
         labels = {
             'numero':'Numéro de commande',
+            'client': 'Client',
+            'lot': 'Lot',
             'date_commande':'Date de commande',
             'statut':'Statut',
             'quantite_vendue_kg':'Quantité vendue (kg)',
@@ -169,17 +141,11 @@ class CommandeForm(forms.ModelForm):
         }
         widgets = {
             'numero': forms.TextInput(attrs={'class':'form-control','placeholder':'CMD001'}),
+            'client': forms.Select(attrs={'class':'form-select'}),
+            'lot': forms.Select(attrs={'class':'form-select'}),
             'date_commande': forms.DateInput(attrs={'type':'date','class':'form-control'}),
             'statut': forms.Select(attrs={'class':'form-select'}),
             'quantite_vendue_kg': forms.NumberInput(attrs={'class':'form-control','step':'0.001'}),
             'prix_unitaire_eur': forms.NumberInput(attrs={'class':'form-control','step':'0.001'}),
             'date_livraison': forms.DateInput(attrs={'type':'date','class':'form-control'}),
         }
-    
-def save(self, commit=True):
-        cmd = super().save(commit=False)
-        cmd.client = Client.objects.get(nom=self.cleaned_data['nom'], prenom=self.cleaned_data['prenom'])
-        cmd.lot = Production.objects.get(lot_code=self.cleaned_data['lot_code'])
-        if commit:
-            cmd.save()
-        return cmd

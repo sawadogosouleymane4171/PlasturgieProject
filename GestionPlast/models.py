@@ -89,6 +89,14 @@ class Production(models.Model):
     def __str__(self):
         return f"{self.lot_code} – {self.type_plastique} ({self.date_production})"
 
+    def clean(self):
+        if self.quantite_kg <= 0:
+            raise ValidationError("La quantité produite doit être supérieure à zéro.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
 
 class Qualite(models.Model):
     """
@@ -252,7 +260,13 @@ class Achat(models.Model):
     def __str__(self):
         return f"{self.achat_code} – {self.quantite_achetee_kg} kg de {self.get_type_matiere_display()}"
 
+    def clean(self):
+        if self.quantite_achetee_kg <= 0:
+            raise ValidationError("La quantité achetée doit être supérieure à zéro.")
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 # ...existing code...

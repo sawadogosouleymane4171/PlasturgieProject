@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Achats{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Achats</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search achats..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'achat_create' %}" class="btn btn-primary mb-3">Add Achat</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Achat Code</th>
+                    <th>Fournisseur</th>
+                    <th>Matiere Type</th>
+                    <th>Quantity (kg)</th>
+                    <th>Unit Cost (€)</th>
+                    <th>Achat Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for achat in achats %}
+                <tr>
+                    <td>{{ achat.achat_code }}</td>
+                    <td>{{ achat.fournisseur }}</td>
+                    <td>{{ achat.get_type_matiere_display }}</td>
+                    <td>{{ achat.quantite_achetee_kg }}</td>
+                    <td>{{ achat.cout_unitaire_eur }}</td>
+                    <td>{{ achat.date_achat }}</td>
+                    <td>
+                        <a href="{% url 'achat_update' achat.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'achat_delete' achat.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

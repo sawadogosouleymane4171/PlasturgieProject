@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Qualités{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Qualités</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search qualites..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'qualite_create' %}" class="btn btn-primary mb-3">Add Qualite</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Test Code</th>
+                    <th>Lot</th>
+                    <th>Defect Rate (%)</th>
+                    <th>Test Type</th>
+                    <th>Result</th>
+                    <th>Observation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for qualite in qualites %}
+                <tr>
+                    <td>{{ qualite.test_code }}</td>
+                    <td>{{ qualite.lot }}</td>
+                    <td>{{ qualite.taux_defauts_pct }}</td>
+                    <td>{{ qualite.get_type_test_display }}</td>
+                    <td>{{ qualite.get_resultat_display }}</td>
+                    <td>{{ qualite.observation }}</td>
+                    <td>
+                        <a href="{% url 'qualite_update' qualite.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'qualite_delete' qualite.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

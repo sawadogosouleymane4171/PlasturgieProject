@@ -16,7 +16,36 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from GestionPlast import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('machines/', views.machine_list, name='machine_list'),
+    path('productions/', views.production_list, name='production_list'),
+    path('qualites/', views.qualite_list, name='qualite_list'),
+    path('clients/', views.client_list, name='client_list'),
+    path('fournisseurs/', views.fournisseur_list, name='fournisseur_list'),
+    path('achats/', views.achat_list, name='achat_list'),
+    path('commandes/', views.commande_list, name='commande_list'),
+    path('machines/create/', views.machine_create, name='machine_create'),
+    path('machines/update/<int:pk>/', views.machine_update, name='machine_update'),
+    path('machines/delete/<int:pk>/', views.machine_delete, name='machine_delete'),
+    path('productions/create/', views.production_create, name='production_create'),
+    path('productions/update/<int:pk>/', views.production_update, name='production_update'),
+    path('productions/delete/<int:pk>/', views.production_delete, name='production_delete'),
+    path('qualites/create/', views.qualite_create, name='qualite_create'),
+    path('qualites/update/<int:pk>/', views.qualite_update, name='qualite_update'),
+    path('qualites/delete/<int:pk>/', views.qualite_delete, name='qualite_delete'),
+    path('clients/create/', views.client_create, name='client_create'),
+    path('clients/update/<int:pk>/', views.client_update, name='client_update'),
+    path('clients/delete/<int:pk>/', views.client_delete, name='client_delete'),
+    path('fournisseurs/create/', views.fournisseur_create, name='fournisseur_create'),
+    path('fournisseurs/update/<int:pk>/', views.fournisseur_update, name='fournisseur_update'),
+    path('fournisseurs/delete/<int:pk>/', views.fournisseur_delete, name='fournisseur_delete'),
+    path('achats/create/', views.achat_create, name='achat_create'),
+    path('achats/update/<int:pk>/', views.achat_update, name='achat_update'),
+    path('achats/delete/<int:pk>/', views.achat_delete, name='achat_delete'),
+    path('commandes/create/', views.commande_create, name='commande_create'),
+    path('commandes/update/<int:pk>/', views.commande_update, name='commande_update'),
+    path('commandes/delete/<int:pk>/', views.commande_delete, name='commande_delete'),
 ]

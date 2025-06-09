@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Machines{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Machines</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search machines..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'machine_create' %}" class="btn btn-primary mb-3">Add Machine</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code machine</th>
+                    <th>Nom</th>
+                    <th>Type de machine</th>
+                    <th>Date de mise en service</th>
+                    <th>État</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for machine in machines %}
+                <tr>
+                    <td>{{ machine.machine_code }}</td>
+                    <td>{{ machine.nom }}</td>
+                    <td>{{ machine.type_machine }}</td>
+                    <td>{{ machine.date_mise_en_service }}</td>
+                    <td>{{ machine.get_etat_display }}</td>
+                    <td>
+                        <a href="{% url 'machine_update' machine.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'machine_delete' machine.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

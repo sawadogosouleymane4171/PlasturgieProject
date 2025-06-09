@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Fournisseurs</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search fournisseurs..." name="search" value="{{ request.GET.search }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <a href="{% url 'fournisseur_create' %}" class="btn btn-primary mb-3">Add Fournisseur</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fournisseur Code</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fournisseur in fournisseurs %}
+                <tr>
+                    <td>{{ fournisseur.fournisseur_code }}</td>
+                    <td>{{ fournisseur.nom }}</td>
+                    <td>{{ fournisseur.contact_email }}</td>
+                    <td>{{ fournisseur.contact_tel }}</td>
+                    <td>{{ fournisseur.adresse }}</td>
+                    <td>
+                        <a href="{% url 'fournisseur_update' fournisseur.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'fournisseur_delete' fournisseur.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
